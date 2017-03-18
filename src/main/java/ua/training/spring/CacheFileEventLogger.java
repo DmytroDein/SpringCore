@@ -1,5 +1,6 @@
 package ua.training.spring;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public class CacheFileEventLogger extends FileEventLogger {
         for(Event ev : cache){
             super.logEvent(ev);
         }
+    }
+
+    public void init(){
+        cache = new ArrayList<>();
     }
 
     public void destroy(){

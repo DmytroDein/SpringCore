@@ -4,6 +4,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
+import java.util.Map;
 
 import static java.lang.System.*;
 /**
@@ -14,17 +15,22 @@ public class App {
 
     private Client client;
     private EventLogger eventLogger;
+    Map<EventType, EventLogger> loggers;
 
-    public App() {
-    }
 
-    public App(Client client, EventLogger eventLogger) {
+    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
         this.eventLogger = eventLogger;
+        this.loggers = loggers;
     }
 
-    private void logEvent(Event event) {
-        String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
+    private void logEvent(EventType type, Event event) {
+        EventLogger logger = loggers.get(type);
+        if (logger == null){
+            //logger = defaultLogger;
+            logger = eventLogger;
+        }
+        //String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
         eventLogger.logEvent(event);
     }
 
@@ -37,11 +43,15 @@ public class App {
 
         Event evt1 = (Event)ctx.getBean("event");
         evt1.setMsg("Some event for user 1");
-        app.logEvent(evt1);
+        app.logEvent(EventType.INFO, evt1);
 
         evt1 = (Event)ctx.getBean("event");
         evt1.setMsg("Some event for user 2");
-        app.logEvent(evt1);
+        app.logEvent(null, evt1);
+
+        evt1 = (Event)ctx.getBean("event");
+        evt1.setMsg("Some event for user 3");
+        app.logEvent(EventType.ERROR, evt1);
 
         ctx.close();
     }

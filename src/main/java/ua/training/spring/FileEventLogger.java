@@ -21,9 +21,6 @@ public class FileEventLogger implements EventLogger{
         file.canWrite();
     }
 
-    public void destroy(){
-
-    }
 
     @Override
     public void logEvent(Event event) {

@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
        xsi:schemaLocation="
  		http://www.springframework.org/schema/beans
- 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/util
+ 		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
     <import resource="loggers.xml"/>
-    
-    <bean id="client" class="ua.training.spring.Client">
-        <constructor-arg index="0" value="1"/>
-        <constructor-arg index="1" value="John Smith"/>
-        <property name="greeting" value="Hello there!"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:client.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode">
+            <util:constant
+                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        </property>
+    </bean>
+
+
+    <bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}">
+        <!--<constructor-arg index="0" value="${id}"/>-->
+        <constructor-arg value="${name}"/>
+        <!--<property name="greeting" value="${greeting}"/>-->
     </bean>
 
     <bean id="dateFormat" class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
@@ -22,15 +41,18 @@
         <constructor-arg ref="dateFormat"/>
     </bean>
 
-    <bean id="app" class="ua.training.spring.App">
-        <constructor-arg ref="client"/>
+    <util:map id="loggerMap">
+        <entry key="INFO" value-ref="consoleEventLogger" />
+        <entry key="ERROR" value-ref="combinedEventLogger" />
+    </util:map>
+
+    <bean id="app" class="ua.training.spring.App" c:client-ref="client">
+        <!--<constructor-arg ref="client"/>-->
         <constructor-arg ref="cacheFileEventLogger"/>
-        <constructor-arg>
-            <map>
-                <entry key="INFO" value-ref="consoleEventLogger"/>
-                <entry key="ERROR" value-ref="combinedEventLogger"/>
-            </map>
-        </constructor-arg>
+        <constructor-arg ref="loggerMap"/>
     </bean>
+
+    <bean id="monitor" class="ua.training.spring.util.Monitor"/>
+    <bean id="awared" class="ua.training.spring.util.AwareBean" init-method="init"/>
 
 </beans>

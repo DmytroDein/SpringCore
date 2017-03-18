@@ -53,6 +53,7 @@ public class App {
         evt1.setMsg("Some event for user 3");
         app.logEvent(EventType.ERROR, evt1);
 
+
         ctx.close();
     }
 

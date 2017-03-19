@@ -1,8 +1,10 @@
 package ua.training.spring;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
 
@@ -13,14 +15,16 @@ import static java.lang.System.*;
  */
 public class App {
 
+    @Autowired
     private Client client;
+    @Resource(name="cacheFileEventLogger")
     private EventLogger eventLogger;
     Map<EventType, EventLogger> loggers;
 
 
-    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
-        this.client = client;
-        this.eventLogger = eventLogger;
+    public App(Map<EventType, EventLogger> loggers) {
+       /* this.client = client;
+        this.eventLogger = eventLogger;*/
         this.loggers = loggers;
     }
 

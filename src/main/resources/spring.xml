@@ -26,9 +26,10 @@
     </bean>
 
 
-    <bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}">
+    <!--<bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}">-->
+    <bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}" c:fullName="${name}">
         <!--<constructor-arg index="0" value="${id}"/>-->
-        <constructor-arg value="${name}"/>
+        <!--<constructor-arg value="${name}"/>-->
         <!--<property name="greeting" value="${greeting}"/>-->
     </bean>
 

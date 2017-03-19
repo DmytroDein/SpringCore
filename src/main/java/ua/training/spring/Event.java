@@ -18,6 +18,13 @@ public class Event {
         this.df = df;
     }
 
+    public static boolean isDay(){
+        long hours = new Date().getTime() / (60 * 60 * 1000) % 24;
+        if (hours > 8 && hours <= 16){
+            return true;
+        } else return false;
+    }
+
     public void setMsg(String msg) {
         this.msg = msg;
     }

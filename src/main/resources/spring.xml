@@ -31,7 +31,9 @@
 
 
     <!--<bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}">-->
-    <bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}" c:fullName="${name}">
+    <!--<bean id="client" class="ua.training.spring.Client" p:greeting="${greeting}" c:id="${id}" c:fullName="${name}">-->
+    <!--<bean id="client" class="ua.training.spring.Client" p:greeting="#{client.greeting ?: 'Hello'}" c:id="${id}" c:fullName="${name}">-->
+    <bean id="client" class="ua.training.spring.Client" p:greeting="#{systemEnvironment['USERNAME']}" c:id="${id}" c:fullName="${name}">
         <!--<constructor-arg index="0" value="${id}"/>-->
         <!--<constructor-arg value="${name}"/>-->
         <!--<property name="greeting" value="${greeting}"/>-->
@@ -53,7 +55,9 @@
 
     <!--<bean id="app" class="ua.training.spring.App" c:client-ref="client" c:eventLogger-ref="cacheFileEventLogger" c:loggers-ref="loggerMap">-->
     <bean id="app" class="ua.training.spring.App" c:loggers-ref="loggerMap">
-        <!--<constructor-arg ref="client"/>-->
+    <!--<bean id="app" class="ua.training.spring.App" c:client-ref="client"-->
+          <!--c:eventLogger-ref="#{T(Event).isDay()? fileEventLogger : consoleEventLogger}" c:loggers-ref="loggerMap">-->
+    <!--<constructor-arg ref="client"/>-->
         <!--<constructor-arg ref="cacheFileEventLogger"/>-->
         <!--<constructor-arg ref="loggerMap"/>-->
     </bean>

@@ -1,5 +1,6 @@
 package ua.training.spring;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,14 +18,17 @@ public class App {
 
     @Autowired
     private Client client;
+    //@Autowired
+    //@Qualifier("#{T(Event).isDay()? fileEventLogger : consoleEventLogger}")
     @Resource(name="cacheFileEventLogger")
     private EventLogger eventLogger;
     Map<EventType, EventLogger> loggers;
 
 
+//    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
     public App(Map<EventType, EventLogger> loggers) {
-       /* this.client = client;
-        this.eventLogger = eventLogger;*/
+        this.client = client;
+        this.eventLogger = eventLogger;
         this.loggers = loggers;
     }
 
@@ -34,7 +38,7 @@ public class App {
             //logger = defaultLogger;
             logger = eventLogger;
         }
-        String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
+        String message = event.getMsg().replaceAll("\\d+", client.getFullName());
         event.setMsg(message);
         logger.logEvent(event);
     }

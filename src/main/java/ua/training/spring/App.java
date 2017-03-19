@@ -30,16 +30,14 @@ public class App {
             //logger = defaultLogger;
             logger = eventLogger;
         }
-        //String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
-        eventLogger.logEvent(event);
+        String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
+        event.setMsg(message);
+        logger.logEvent(event);
     }
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
-
-        /*app.client = new Client("1", "Jonh Smith");
-        app.eventLogger = new ConsoleEventLogger();*/
 
         Event evt1 = (Event)ctx.getBean("event");
         evt1.setMsg("Some event for user 1");

@@ -5,15 +5,17 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
  		http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/util
  		http://www.springframework.org/schema/util/spring-util-3.2.xsd
         http://www.springframework.org/schema/context
- 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+ 		http://www.springframework.org/schema/context/spring-context-3.2.xsd
+ 		http://www.springframework.org/schema/aop
+ 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-    <context:annotation-config/>
     <import resource="loggers.xml"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -54,15 +56,23 @@
     </util:map>
 
     <!--<bean id="app" class="ua.training.spring.App" c:client-ref="client" c:eventLogger-ref="cacheFileEventLogger" c:loggers-ref="loggerMap">-->
-    <bean id="app" class="ua.training.spring.App" c:loggers-ref="loggerMap">
+    <!--<bean id="app" class="ua.training.spring.App" c:loggers-ref="loggerMap">-->
+    <bean id="app" class="ua.training.spring.App">
     <!--<bean id="app" class="ua.training.spring.App" c:client-ref="client"-->
           <!--c:eventLogger-ref="#{T(Event).isDay()? fileEventLogger : consoleEventLogger}" c:loggers-ref="loggerMap">-->
     <!--<constructor-arg ref="client"/>-->
         <!--<constructor-arg ref="cacheFileEventLogger"/>-->
-        <!--<constructor-arg ref="loggerMap"/>-->
+        <constructor-arg ref="loggerMap"/>
     </bean>
 
     <bean id="monitor" class="ua.training.spring.util.Monitor"/>
     <bean id="awared" class="ua.training.spring.util.AwareBean" init-method="init"/>
+
+    <bean id="logAspect" class="ua.training.spring.aspects.LoggingAspect"/>
+
+    <bean id="statAspect" class="ua.training.spring.aspects.StatisticsAspect"/>
+
+    <context:annotation-config/>
+    <aop:aspectj-autoproxy/>
 
 </beans>

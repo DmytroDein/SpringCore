@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ua.training.spring.aspects.StatisticsAspect;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -23,6 +24,8 @@ public class App {
     @Resource(name="cacheFileEventLogger")
     private EventLogger eventLogger;
     Map<EventType, EventLogger> loggers;
+    @Autowired
+    StatisticsAspect statisticsAspect;
 
 
 //    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
@@ -59,8 +62,16 @@ public class App {
         evt1.setMsg("Some event for user 3");
         app.logEvent(EventType.ERROR, evt1);
 
+        app.printAspectStatistics();
 
         ctx.close();
+    }
+
+    private void printAspectStatistics() {
+        System.out.println("Aspects statistics:");
+        for (Map.Entry<?, Integer> entr: statisticsAspect.getCounter().entrySet()){
+            System.out.println("Entry: " + entr.getKey().toString() + "  Value: "  + entr.getValue());
+        }
     }
 
 

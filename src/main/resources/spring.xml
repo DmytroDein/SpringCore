@@ -74,6 +74,45 @@
 
     <bean id="aroundAspect" class="ua.training.spring.aspects.AroundAspect" c:otherLogger-ref="cacheFileEventLogger"/>
 
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>classpath:mysql.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="ignoreResourceNotFound" value="true"/>-->
+        <!--<property name="systemPropertiesMode">-->
+            <!--<util:constant-->
+                    <!--static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />-->
+        <!--</property>-->
+    <!--</bean>-->
+
+   <!--<util:map id="dbProps">-->
+        <!--<entry key="db.driver" value="com.mysql.jdbc.Driver"/>-->
+        <!--<entry key="db.jdbcurl" value="jdbc:mysql://localhost:3306/spring_core"/>-->
+        <!--<entry key="db.username" value="root"/>-->
+        <!--<entry key="db.password" value="root"/>-->
+    <!--</util:map>-->
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="${jdbc.driverClassName}"/>-->
+        <!--<property name="url" value="${jdbc.url}"/>-->
+        <!--<property name="username" value="${jdbc.username}"/>-->
+        <!--<property name="password" value="${jdbc.password}"/>-->
+    <!--</bean>-->
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/spring_core"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+
+
     <context:annotation-config/>
     <aop:aspectj-autoproxy/>
 

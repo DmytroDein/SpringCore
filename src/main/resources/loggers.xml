@@ -20,7 +20,12 @@
             <list>
                 <ref bean="consoleEventLogger"/>
                 <ref bean="fileEventLogger"/>
+                <ref bean="dblogger"/>
             </list>
         </constructor-arg>
+    </bean>
+
+    <bean id="dblogger" class="ua.training.spring.DBLogger">
+        <constructor-arg ref="jdbcTemplate"/>
     </bean>
 </beans>

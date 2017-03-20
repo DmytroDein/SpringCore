@@ -72,6 +72,8 @@
 
     <bean id="statAspect" class="ua.training.spring.aspects.StatisticsAspect"/>
 
+    <bean id="aroundAspect" class="ua.training.spring.aspects.AroundAspect" c:otherLogger-ref="cacheFileEventLogger"/>
+
     <context:annotation-config/>
     <aop:aspectj-autoproxy/>
 
